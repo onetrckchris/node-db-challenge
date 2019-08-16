@@ -1,5 +1,5 @@
 const express = require('express');
-// const recipeRouter = require('../recipes/recipes-router');
+const projectRouter = require('../projects/projects-router');
 
 const server = express();
 
@@ -10,6 +10,6 @@ const logger = (req, res, next) => {
 
 server.use(express.json());
 server.use(logger);
-// server.use('/api/recipes', recipeRouter);
+server.use('/api/projects', projectRouter);
 
 module.exports = server;
