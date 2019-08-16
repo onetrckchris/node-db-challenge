@@ -1,11 +1,12 @@
 const router = require('express').Router();
 const Projects = require('./projects-model');
+const db = require('../data/db-config');
 
 // ---------------------------------------------------------------------
 // ------------------------ GENERAL ENDPOINTS --------------------------
 // ---------------------------------------------------------------------
 
-router.get('/:id', async (req, res) => {
+router.get('/details/:id', async (req, res) => {
     try {
         const project = await Projects.getProject(req.params.id);
         res.json(project);
@@ -52,7 +53,8 @@ router.post('/resources', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const projects = await Projects.getProjects();
-        res.json(projects);
+        let fixedProjects = projects.map(project => ({ ...project, completed: project.completed ? true : false }));
+        res.json(fixedProjects);
     } catch (err) {
         res.status(500).json({ error: "Problem when getting projects." });
     }
@@ -74,7 +76,8 @@ router.post('/', async (req, res) => {
 router.get('/tasks', async (req, res) => {
     try {
         const tasks = await Projects.getTasks();
-        res.json(tasks);
+        let fixedTasks = tasks.map(task => ({ ...task, completed: task.completed ? true : false }));
+        res.json(fixedTasks);
     } catch (err) {
         res.status(500).json({ error: "Problem when getting tasks." });
     }
